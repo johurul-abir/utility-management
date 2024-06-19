@@ -1,0 +1,9 @@
+.ms-auto {
+  display: flex;
+  align-items: center;
+  .nav-link {
+    &:hover {
+      color: #09dca4 !important;
+    }
+  }
+}

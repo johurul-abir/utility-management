@@ -1,0 +1,19 @@
+.admin-element {
+  ul {
+    display: flex;
+    flex-direction: column;
+    li {
+      color: black;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 5px;
+      &:hover {
+        background-color: aquamarine;
+      }
+    }
+  }
+}
+.header {
+  z-index: +999999;
+}
