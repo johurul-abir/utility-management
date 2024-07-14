@@ -59,13 +59,3 @@ export const getLoggedInUser = createAsyncThunk(
     }
   }
 );
-
-//get logedin user wiht me route
-export const getAllUsers = createAsyncThunk("auth/getAllUsers", async () => {
-  try {
-    const response = await API.get("/api/v1/user");
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response.data.message);
-  }
-});

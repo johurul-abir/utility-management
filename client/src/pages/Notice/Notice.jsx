@@ -10,6 +10,9 @@ import Slider from "react-slick";
 import "./Notice.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { getAllNotice } from "../../features/notice/noticeApiSlice";
 
 const Notice = () => {
   const settings = {
@@ -46,6 +49,21 @@ const Notice = () => {
     ],
   };
 
+  const dispatch = useDispatch();
+
+  const [seeMore, setSeeMore] = useState(5);
+  const seemoreRef = useRef(null);
+
+  const { notices } = useSelector((state) => state.notice);
+
+  const handleReadMore = (data) => {
+    setSeeMore(data);
+  };
+
+  useEffect(() => {
+    dispatch(getAllNotice());
+  }, [dispatch]);
+
   return (
     <>
       <div className="notice">
@@ -56,51 +74,37 @@ const Notice = () => {
                 <h2 className="text-center">Notice</h2>
                 <div className="slider-container pt-3">
                   <Slider {...settings}>
-                    <Card>
-                      <CardHeader>
-                        <h2>Gass bill Notice</h2>
-                      </CardHeader>
-                      <CardBody>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Voluptatibus sed deserunt molestiae dolore
-                          voluptas vitae excepturi minima sapiente similique,
-                          rem provident adipisci ipsum officiis sit beatae.
-                          Excepturi voluptas laboriosam vitae?
-                        </p>
-                        <button className="btn btn-info"> See more</button>
-                      </CardBody>
-                    </Card>
-                    <Card>
-                      <CardHeader>
-                        <h2>Gass bill Notice</h2>
-                      </CardHeader>
-                      <CardBody>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Voluptatibus sed deserunt molestiae dolore
-                          voluptas vitae excepturi minima sapiente similique,
-                          rem provident adipisci ipsum officiis sit beatae.
-                          Excepturi voluptas laboriosam vitae?
-                        </p>
-                        <button className="btn btn-info"> See more</button>
-                      </CardBody>
-                    </Card>
-                    <Card>
-                      <CardHeader>
-                        <h2>Gass bill Notice</h2>
-                      </CardHeader>
-                      <CardBody>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Voluptatibus sed deserunt molestiae dolore
-                          voluptas vitae excepturi minima sapiente similique,
-                          rem provident adipisci ipsum officiis sit beatae.
-                          Excepturi voluptas laboriosam vitae?
-                        </p>
-                        <button className="btn btn-info"> See more</button>
-                      </CardBody>
-                    </Card>
+                    {notices?.map((item, index) => {
+                      return (
+                        <Card key={index}>
+                          <CardHeader>
+                            <h2>{item?.title}</h2>
+                          </CardHeader>
+                          <CardBody>
+                            <img
+                              src="https://img.freepik.com/premium-vector/notice-free-vector_734448-5.jpg"
+                              alt=""
+                            />
+                            <p>
+                              {item?.content
+                                ?.split(" ")
+                                .slice(0, seeMore)
+                                .join(" ")}
+                            </p>
+
+                            <button
+                              className="btn btn-info"
+                              onClick={() =>
+                                handleReadMore(item?.content?.length)
+                              }
+                              ref={seemoreRef}
+                            >
+                              See more
+                            </button>
+                          </CardBody>
+                        </Card>
+                      );
+                    })}
                   </Slider>
                 </div>
               </div>

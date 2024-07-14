@@ -5,12 +5,15 @@ import {
   deleteBill,
   getActiveBills,
   getAllBtypeBills,
+  getDueBillsForAdmin,
 } from "./btypeApiSlice";
 
 const btypeBillSlice = createSlice({
   name: "btype",
   initialState: {
     btypebills: [],
+    activebills: [],
+    dueadminbills: [],
     loading: false,
     message: null,
     error: null,
@@ -61,7 +64,7 @@ const btypeBillSlice = createSlice({
       })
       .addCase(getActiveBills.fulfilled, (state, action) => {
         state.loading = false;
-        state.btypebills = action.payload.activebills;
+        state.activebills = action.payload.activebills;
         state.message = null;
       })
 
@@ -78,6 +81,7 @@ const btypeBillSlice = createSlice({
         state.btypebills = action.payload;
         state.message = action.payload.message;
       })
+
       //Done Active bill and sent bill to user email and phone
       .addCase(activeBill.pending, (state) => {
         state.loading = true;
@@ -90,6 +94,20 @@ const btypeBillSlice = createSlice({
         state.loading = false;
         state.btypebills = action.payload.activebills;
         state.message = action.payload.message;
+      })
+
+      //get all due bills for admin
+      .addCase(getDueBillsForAdmin.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getDueBillsForAdmin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getDueBillsForAdmin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.dueadminbills = action.payload.userduebills;
+        state.message = null;
       });
   },
 });

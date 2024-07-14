@@ -3,6 +3,12 @@ import mongoose from "mongoose";
 // create user schema
 const btypeBillSchema = mongoose.Schema(
   {
+    users: {
+      type: [mongoose.Schema.Types.ObjectId],
+      rer: "userSchema",
+      default: [],
+    },
+
     billdate: {
       type: String,
       default: null,

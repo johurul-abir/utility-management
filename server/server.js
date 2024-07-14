@@ -9,6 +9,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import btypeBillRouter from "./router/btypeBillRouter.js";
 import noticeRuter from "./router/noticeRouter.js";
+import paymentRouter from "./router/paymentRouter.js";
 
 //dotenv config
 dotenv.config();
@@ -38,6 +39,7 @@ app.use("/api/v1/user", userRouter);
 app.use(userAuthRouter);
 app.use("/api/v1/btypebill", btypeBillRouter);
 app.use("/api/v1/notice", noticeRuter);
+app.use("/api/v1/payment", paymentRouter);
 
 //errorHandler
 app.use(errorHandler);

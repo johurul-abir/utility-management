@@ -10,6 +10,7 @@ import { MdFontDownload } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdCurrencyBitcoin } from "react-icons/md";
 import { CiBank } from "react-icons/ci";
+import { TbCoinTaka } from "react-icons/tb";
 
 const Admin = () => {
   const location = useLocation();
@@ -121,16 +122,41 @@ const Admin = () => {
                       className="dropdown-btn"
                     >
                       <li>
-                        <IoNotifications /> Create Notice
+                        <TbCoinTaka />
+                        Payment
                       </li>
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
                       <Dropdown.Item>
-                        <Link to="student"> Create new notice </Link>
+                        <Link to="student"> </Link>
                       </Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">
-                        <Link to=" "> All Notice </Link>
+                      <Dropdown.Item as={Link} to="/admin/createpayment">
+                        Create new Payment
+                      </Dropdown.Item>
+
+                      <Dropdown.Item as={Link} to="/admin/allpayment">
+                        All Payments
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      id="dropdown-basic"
+                      className="dropdown-btn"
+                    >
+                      <li>
+                        <IoNotifications /> Create Notice
+                      </li>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item as={Link} to="/admin/createnotice">
+                        Create new notice
+                      </Dropdown.Item>
+                      <Dropdown.Item as={Link} to="/admin/allnotice">
+                        All Notice
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>

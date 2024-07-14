@@ -1,11 +1,11 @@
 import { findPublicId, isEmail, isMobile } from "../helper/Helper.js";
-import Student from "../model/userSchema.js";
 import bcrypt from "bcrypt";
 import {
   fileDataDeleteFromCloud,
   fileUploadToCloud,
 } from "../utils/cloudinary.js";
 import asyncHandler from "express-async-handler";
+import User from "../model/userSchema.js";
 
 /**
  *
@@ -16,9 +16,9 @@ import asyncHandler from "express-async-handler";
  */
 
 export const getAllUser = asyncHandler(async (req, res) => {
-  const data = await Student.find();
+  const data = await User.find();
 
-  res.status(200).json({ user: data, message: "All student get successfull" });
+  res.status(200).json({ users: data, message: "All student get successfull" });
 });
 
 /**

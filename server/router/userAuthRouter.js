@@ -1,6 +1,5 @@
 import {
   accountActivitonByOtp,
-  createPaybill,
   getAllusers,
   logdinUser,
   userLogin,
@@ -18,7 +17,6 @@ router.post("/api/v1/user/login", userLogin);
 router.post("/api/v1/user/logout", userLogout);
 router.get("/me", tokenVerify, logdinUser);
 router.get("/api/v1/user", getAllusers);
-router.put("/api/v1/user/paybill", tokenVerify, createPaybill);
 
 //export default
 export default router;

@@ -6,16 +6,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { getActiveBills } from "../../../../features/btypebill/btypeApiSlice";
 import { Container, Modal, Row, Table } from "react-bootstrap";
 import { RxCross2 } from "react-icons/rx";
+import { toast } from "react-toastify";
+import {
+  createPayment,
+  getAllDuebills,
+  getAllPayments,
+} from "../../../../features/payment/paymentApiSlice";
+import { setMessageEmpty } from "../../../../features/payment/paymentSlice";
 
 const AllDueBills = () => {
   const dispatch = useDispatch();
+
   const { btypebills } = useSelector((state) => state.btype);
+
+  const { duepaymets, message, error } = useSelector((state) => state.payment);
 
   //single Modal show hide State
   const [modal, setModal] = useState(false);
 
   //single data show state
   const [singleData, setSingleData] = useState(false);
+
   //single modal show handle
   const handleSingleModalShow = async (id) => {
     setModal(true);
@@ -23,13 +34,39 @@ const AllDueBills = () => {
     setSingleData(data);
   };
 
+  const loginuser = JSON.parse(localStorage.getItem("user"));
+
+  const handlePayClick = async (id) => {
+    const paid = btypebills.find((item) => item._id === id);
+    dispatch(
+      createPayment({
+        amount: `${paid.total}`,
+        users: [loginuser._id],
+        btypebills: `${id}`,
+      })
+    );
+  };
+
   useEffect(() => {
+    if (message) {
+      toast.success(message);
+      dispatch(getAllDuebills());
+      dispatch(getActiveBills());
+      dispatch(getAllPayments());
+      dispatch(setMessageEmpty());
+    }
+    if (error) {
+      toast.success(error);
+      dispatch(setMessageEmpty());
+    }
+    dispatch(getAllDuebills());
     dispatch(getActiveBills());
-  }, [dispatch]);
+  }, [dispatch, message, error]);
 
   return (
     <>
       {/* single bill */}
+
       <div className="single-modal">
         <Container>
           <Row>
@@ -179,14 +216,14 @@ const AllDueBills = () => {
               </thead>
 
               <tbody>
-                {btypebills.length > 0
-                  ? btypebills.map((item, index) => {
+                {duepaymets?.length > 0
+                  ? duepaymets?.map((item, index) => {
                       return (
                         <tr key={index}>
                           <td> {index + 1} </td>
 
                           <td>
-                            <h2> {item.billdate} </h2>
+                            <h2> {`${item?.billdate}`} </h2>
                           </td>
 
                           <td>
@@ -194,23 +231,20 @@ const AllDueBills = () => {
                           </td>
 
                           <td>
-                            <h2> {item.total} </h2>
+                            <h2> {item?.total} </h2>
                           </td>
 
                           <td>
-                            <Link
-                              className={
-                                item.paybill
-                                  ? "btn btn-sm btn btn-success"
-                                  : "btn btn-sm btn btn-danger"
-                              }
-                            >
-                              {item.paybill ? "Paied" : "Due"}
+                            <Link className="btn btn-sm btn btn-danger">
+                              Due
                             </Link>
                           </td>
 
                           <td>
-                            <Link className="btn btn-sm btn btn-success">
+                            <Link
+                              className="btn btn-sm btn btn-warning"
+                              onClick={() => handlePayClick(item._id)}
+                            >
                               Pay Now
                             </Link>
                           </td>

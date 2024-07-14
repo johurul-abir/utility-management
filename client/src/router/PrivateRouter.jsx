@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import Admin from "../pages/admin/Admin";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Layout from "../components/layout/Layout";
 import UserDashboard from "../pages/user dashboard/UserDashboard";
 import AllBills from "../pages/admin/pages/B-type-bill/AllBills";
@@ -9,12 +9,22 @@ import Dashboard from "../pages/admin/pages/dashboard/Dashboard";
 import Register from "../components/register/Register";
 import AllBtypeUsers from "../pages/admin/pages/all-btype-users/AllBtypeUsers";
 import BillsBox from "../pages/user dashboard/page/bills-box/BillsBox";
+import AllPayment from "../pages/admin/pages/payment/AllPayment";
+import CreatePayment from "../pages/admin/pages/payment/CreatePayment";
+import AllNotice from "../pages/admin/pages/notice/AllNotice";
+import CreateNotice from "../pages/admin/pages/notice/CreateNotice";
+import ProfileDashbord from "../pages/user dashboard/page/dashborad/ProfileDashbord";
 
 const PrivateRouteGard = () => {
   const { auths } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   if (location.pathname === "/admin") {
-    <Navigate to={"/admin/admindashboard"} />;
+    navigate("/admin/admindashboard");
+  }
+
+  if (location.pathname === "/dashboard") {
+    navigate("/dashboard/userdashboard");
   }
 
   if (auths) {
@@ -36,6 +46,10 @@ const PrivateRouter = [
             path: "dashboard",
             element: <UserDashboard />,
             children: [
+              {
+                path: "userdashboard",
+                element: <ProfileDashbord />,
+              },
               {
                 path: "bills",
                 element: <BillsBox />,
@@ -70,6 +84,22 @@ const PrivateRouter = [
       {
         path: "allbtypeusers",
         element: <AllBtypeUsers />,
+      },
+      {
+        path: "allpayment",
+        element: <AllPayment />,
+      },
+      {
+        path: "createpayment",
+        element: <CreatePayment />,
+      },
+      {
+        path: "allnotice",
+        element: <AllNotice />,
+      },
+      {
+        path: "createnotice",
+        element: <CreateNotice />,
       },
     ],
   },

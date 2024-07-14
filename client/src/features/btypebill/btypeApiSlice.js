@@ -36,10 +36,23 @@ export const activeBill = createAsyncThunk("btype/activeBill", async (id) => {
 
 //Get all btype bills
 export const getActiveBills = createAsyncThunk(
-  "btype/getAllActiveBills",
+  "btype/getActiveBills",
   async () => {
     try {
       const response = await API.get("/api/v1/btypebill/activebills");
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+//Get all due bills from admin panel
+export const getDueBillsForAdmin = createAsyncThunk(
+  "btype/getDueBillsForAdmin",
+  async (id) => {
+    try {
+      const response = await API.get(`/api/v1/btypebill/seeuserduebills/${id}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);

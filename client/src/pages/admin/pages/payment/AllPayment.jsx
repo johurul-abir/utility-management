@@ -1,32 +1,82 @@
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  Modal,
+  Row,
+  Table,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { IoEye } from "react-icons/io5";
-import { CiSaveDown1 } from "react-icons/ci";
 import { useEffect, useState } from "react";
+import { IoEye } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { getActiveBills } from "../../../../features/btypebill/btypeApiSlice";
-import { Container, Modal, Row, Table } from "react-bootstrap";
+import {
+  deletePayment,
+  getAllAdminPayments,
+  getAllPayments,
+} from "../../../../features/payment/paymentApiSlice";
 import { RxCross2 } from "react-icons/rx";
+import Swal from "sweetalert2";
+import { setMessageEmpty } from "../../../../features/payment/paymentSlice";
+import { toast } from "react-toastify";
 
-const GetAllBills = () => {
+const AllPayment = () => {
   const dispatch = useDispatch();
-  const { activebills } = useSelector((state) => state.btype);
-  const { duepaymets } = useSelector((state) => state.payment);
-
-  //single Modal show hide State
   const [modal, setModal] = useState(false);
 
   //single data show state
   const [singleData, setSingleData] = useState(false);
+
+  const { adminpayments, message, error } = useSelector(
+    (state) => state.payment
+  );
+
+  //const { payments} = useSelector((state) => state.payment);
+
   //single modal show handle
   const handleSingleModalShow = async (id) => {
     setModal(true);
-    const data = await activebills.find((data) => data._id == id);
+    const data = await adminpayments.find((item) => item._id == id);
     setSingleData(data);
   };
 
+  //delete payment
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deletePayment(id));
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+    });
+  };
+
   useEffect(() => {
-    dispatch(getActiveBills());
-  }, [dispatch]);
+    if (message) {
+      dispatch(getAllAdminPayments());
+      dispatch(getAllPayments());
+      setMessageEmpty();
+    }
+    if (error) {
+      toast.error(error);
+    }
+    dispatch(getAllAdminPayments());
+  }, [dispatch, message, error]);
+
   return (
     <>
       {/* single bill */}
@@ -70,10 +120,13 @@ const GetAllBills = () => {
                       <p>ট্রাষ্ট-ব্যাংক-কাফরুল শাখা A/C 0041-020003058</p>
                     </div>
                     <div className="date">
-                      <p>মাসের নাম:&nbsp; {singleData?.billdate} </p>
                       <p>
-                        তারিখ:&nbsp;
-                        {singleData?.billdate}
+                        বিল প্রদানের তারিখ:&nbsp;{" "}
+                        {singleData?.btypebills?.billdate}{" "}
+                      </p>
+                      <p>
+                        বিল পরিশোধ তারিখ :&nbsp;
+                        {singleData?.createdAt}
                       </p>
                     </div>
                   </div>
@@ -90,67 +143,70 @@ const GetAllBills = () => {
                         <tr>
                           <td>1</td>
                           <td> গ্যাস বিল</td>
-                          <td> {singleData?.gass} </td>
+                          <td> {singleData.btypebills?.gass} </td>
                         </tr>
                         <tr>
                           <td>2</td>
                           <td> বিদ্যুৎ বিল</td>
-                          <td>{singleData?.electricity} </td>
+                          <td>{singleData.btypebills?.electricity} </td>
                         </tr>
                         <tr>
                           <td>2</td>
                           <td> পানি বিল</td>
-                          <td> {singleData?.water} </td>
+                          <td> {singleData.btypebills?.water} </td>
                         </tr>
                         <tr>
                           <td>3</td>
                           <td> অভ্যন্তরিন পৌরসুবিধা</td>
-                          <td> {singleData?.internalfacilities} </td>
+                          <td> {singleData.btypebills?.internalfacilities} </td>
                         </tr>
                         <tr>
                           <td>4</td>
                           <td>নিরাপত্তা চার্জ</td>
-                          <td> {singleData?.safety} </td>
+                          <td> {singleData.btypebills?.safety} </td>
                         </tr>
                         <tr>
                           <td>5</td>
                           <td> কমন মিটার</td>
-                          <td> {singleData?.commonmitter} </td>
+                          <td> {singleData.btypebills?.commonmitter} </td>
                         </tr>
                         <tr>
                           <td>6</td>
                           <td>জেনারেটরের চার্জ</td>
-                          <td> {singleData?.generator} </td>
+                          <td> {singleData.btypebills?.generator} </td>
                         </tr>
                         <tr>
                           <td>7</td>
                           <td> গ্যারেজ বাবদ</td>
-                          <td> {singleData?.garage} </td>
+                          <td> {singleData.btypebills?.garage} </td>
                         </tr>
                         <tr>
                           <td>8</td>
                           <td> মসজিদ স্টাফ </td>
-                          <td> {singleData?.mosjid} </td>
+                          <td> {singleData.btypebills?.mosjid} </td>
                         </tr>
                         <tr>
                           <td>9</td>
                           <td> স্টাফ বেতন ও সার্ভিস চার্জ </td>
-                          <td> {singleData?.staf} </td>
+                          <td> {singleData.btypebills?.staf} </td>
                         </tr>
                         <tr>
                           <td>9</td>
                           <td> বিল জমা দেওয়ার শেষ তারিখ </td>
-                          <td> {singleData?.expire} </td>
+                          <td> {singleData.btypebills?.expire} </td>
                         </tr>
                         <tr>
-                          <td>10</td>
-                          <td> বিলম্বিত জরিমানা ফি </td>
-                          <td> 10% </td>
+                          <td className="text-danger">10</td>
+                          <td className="text-danger"> বিলম্বিত জরিমানা ফি </td>
+                          <td className="text-danger"> 10% </td>
                         </tr>
                         <tr>
-                          <td> </td>
-                          <td>সর্বোমোট</td>
-                          <td> {singleData.total} </td>
+                          <td className="bg-primary"></td>
+                          <td className="bg-primary">সর্বোমোট</td>
+                          <td className="bg-primary">
+                            {" "}
+                            {singleData.btypebills?.total}{" "}
+                          </td>
                         </tr>
                       </tbody>
                     </Table>
@@ -162,77 +218,68 @@ const GetAllBills = () => {
         </Container>
       </div>
 
-      <div className="card card-table mb-0">
-        <div className="card-body">
-          <div className="table-responsive">
-            <table className="table table-hover table-center mb-0">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Submit Date</th>
-                  <th style={{ color: "red" }}>Expire Date</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
+      <div className="allpayment">
+        <Container>
+          <Link
+            to="/admin/createpayment"
+            className="btn btn-sm btn btn-primary mb-3"
+          >
+            Create Payment
+          </Link>
+          <Card>
+            <CardHeader>
+              <h2>All Payments</h2>
+            </CardHeader>
+            <CardBody>
+              <Table responsive>
+                <thead>
+                  <tr className="align-middle text-center">
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Flate No</th>
+                    <th> Total bill </th>
+                    <th> Action </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {adminpayments?.length > 0
+                    ? adminpayments.map((item, index) => {
+                        return (
+                          <tr className="align-middle text-center" key={index}>
+                            <td> {index + 1} </td>
+                            <td> {item.btypebills?.billdate} </td>
+                            <td> {item.users?.flateno} </td>
 
-              <tbody>
-                {activebills.length > 0
-                  ? activebills.map((item, index) => {
-                      return (
-                        <tr key={index}>
-                          <td> {index + 1} </td>
+                            <td>
+                              {item.btypebills.total} <FaBangladeshiTakaSign />
+                            </td>
 
-                          <td>
-                            <h2>{item.billdate}</h2>
-                          </td>
-
-                          <td>
-                            <h2 style={{ color: "red" }}> {item.expire} </h2>
-                          </td>
-
-                          <td>
-                            <h2> {item.total} </h2>
-                          </td>
-                          <td>
-                            <Link
-                              className={
-                                duepaymets?.find((x) => x._id === item?._id)
-                                  ? "btn btn-sm btn btn-danger"
-                                  : "btn btn-sm btn btn-success"
-                              }
-                            >
-                              {duepaymets?.find((x) => x._id === item?._id)
-                                ? "Due"
-                                : "Paid"}
-                            </Link>
-                          </td>
-
-                          <td>
-                            <div className="button-action">
+                            <td>
                               <button
-                                className="btn btn-sm btn btn-primary mx-1"
+                                className="btn btn-sm btn btn-warning me-1"
                                 onClick={() => handleSingleModalShow(item._id)}
                               >
                                 <IoEye />
                               </button>
-                              <button className="btn btn-sm btn btn-info">
-                                <CiSaveDown1 />
+                              <button
+                                className="btn btn-sm btn btn-danger"
+                                onClick={() => handleDelete(item._id)}
+                              >
+                                <MdDelete />
                               </button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  : "Bill not found"}
-              </tbody>
-            </table>
-          </div>
-        </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    : "Payment not Found"}
+                </tbody>
+              </Table>
+            </CardBody>
+          </Card>
+        </Container>
       </div>
     </>
   );
 };
 
-export default GetAllBills;
+export default AllPayment;

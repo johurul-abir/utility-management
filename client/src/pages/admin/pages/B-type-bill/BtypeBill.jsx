@@ -2,7 +2,7 @@ import { Card, CardBody, CardHeader, Container, Row } from "react-bootstrap";
 import "./BtypeBill.scss";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import useForm from "../../../../hooks/useForm";
 import { creatBtypeBill } from "../../../../features/btypebill/btypeApiSlice";
 import { useEffect } from "react";
@@ -10,6 +10,7 @@ import { setMessageEmpty } from "../../../../features/btypebill/btypeBillSlice";
 
 const BtypeBill = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, message, error } = useSelector((state) => state.btype);
   const { input, handelInputChange, resetForm } = useForm({
     billdate: " ",
@@ -36,7 +37,7 @@ const BtypeBill = () => {
       toast.success(message);
       resetForm();
       dispatch(setMessageEmpty());
-      <Navigate to="btypebills" />;
+      navigate("/admin/btypebills");
     }
 
     if (error) {

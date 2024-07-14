@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  getAllUsers,
   getLoggedInUser,
   registerDonor,
   registerPatient,
@@ -91,19 +90,6 @@ const authSlice = createSlice({
         state.error = action.error.message;
         state.auths = null;
         localStorage.removeItem("user");
-      })
-      //get all user
-      .addCase(getAllUsers.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getAllUsers.fulfilled, (state, action) => {
-        state.loading = false;
-        state.message = null;
-        state.auths = action.payload.user;
-      })
-      .addCase(getAllUsers.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
       });
   },
 });

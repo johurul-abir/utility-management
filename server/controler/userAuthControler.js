@@ -256,29 +256,3 @@ export const getAllusers = asyncHandler(async (req, res) => {
   //final response
   res.status(200).json({ auth: user, message: "get all user successfull" });
 });
-
-/**
- * @description  pay bill
- * @method patch
- * @route /api/v1/auth/users/paybill
- * @access private
- */
-export const createPaybill = asyncHandler(async (req, res) => {
-  const { id } = req.me;
-  const { billId } = req.body;
-  const user = await User.find(_id);
-
-  // const addBill = user.donebillofmonth.find((id)=> id.toString() === billId);
-
-  const userp = await User.findByIdAndUpdate(
-    id,
-    {
-      $push: { donebillofmonth: billId },
-    },
-    {
-      new: true,
-    }
-  );
-
-  res.status(200).json({ userp, message: "Paybill successfull" });
-});

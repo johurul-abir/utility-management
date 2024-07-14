@@ -42,15 +42,14 @@ const userSchema = mongoose.Schema(
       type: [String],
       default: [],
     },
+
     donebillofmonth: {
-      type: [mongoose.Schema.Types.ObjectId],
-      rer: "BtypeBill",
+      type: [String],
       default: [],
       trim: true,
     },
     duebillofmonth: {
-      type: [mongoose.Schema.Types.ObjectId],
-      rer: "BtypeBill",
+      type: [String],
       default: [],
       trim: true,
     },

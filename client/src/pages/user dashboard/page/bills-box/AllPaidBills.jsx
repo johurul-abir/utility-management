@@ -6,27 +6,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { getActiveBills } from "../../../../features/btypebill/btypeApiSlice";
 import { Container, Modal, Row, Table } from "react-bootstrap";
 import { RxCross2 } from "react-icons/rx";
+import { getAllPayments } from "../../../../features/payment/paymentApiSlice";
 
-const GetAllBills = () => {
+const AllPaidBills = () => {
   const dispatch = useDispatch();
-  const { activebills } = useSelector((state) => state.btype);
-  const { duepaymets } = useSelector((state) => state.payment);
+
+  const { btypebills } = useSelector((state) => state.btype);
+  const { payments } = useSelector((state) => state.payment);
 
   //single Modal show hide State
   const [modal, setModal] = useState(false);
 
   //single data show state
   const [singleData, setSingleData] = useState(false);
+
   //single modal show handle
   const handleSingleModalShow = async (id) => {
     setModal(true);
-    const data = await activebills.find((data) => data._id == id);
+    const data = await btypebills.find((data) => data._id == id);
     setSingleData(data);
   };
 
   useEffect(() => {
     dispatch(getActiveBills());
+    dispatch(getAllPayments());
   }, [dispatch]);
+
   return (
     <>
       {/* single bill */}
@@ -90,67 +95,67 @@ const GetAllBills = () => {
                         <tr>
                           <td>1</td>
                           <td> গ্যাস বিল</td>
-                          <td> {singleData?.gass} </td>
+                          <td> {singleData.gass} </td>
                         </tr>
                         <tr>
                           <td>2</td>
                           <td> বিদ্যুৎ বিল</td>
-                          <td>{singleData?.electricity} </td>
+                          <td>{singleData.electricity} </td>
                         </tr>
                         <tr>
                           <td>2</td>
                           <td> পানি বিল</td>
-                          <td> {singleData?.water} </td>
+                          <td> {singleData.water} </td>
                         </tr>
                         <tr>
                           <td>3</td>
                           <td> অভ্যন্তরিন পৌরসুবিধা</td>
-                          <td> {singleData?.internalfacilities} </td>
+                          <td> {singleData.internalfacilities} </td>
                         </tr>
                         <tr>
                           <td>4</td>
                           <td>নিরাপত্তা চার্জ</td>
-                          <td> {singleData?.safety} </td>
+                          <td> {singleData.safety} </td>
                         </tr>
                         <tr>
                           <td>5</td>
                           <td> কমন মিটার</td>
-                          <td> {singleData?.commonmitter} </td>
+                          <td> {singleData.commonmitter} </td>
                         </tr>
                         <tr>
                           <td>6</td>
                           <td>জেনারেটরের চার্জ</td>
-                          <td> {singleData?.generator} </td>
+                          <td> {singleData.generator} </td>
                         </tr>
                         <tr>
                           <td>7</td>
                           <td> গ্যারেজ বাবদ</td>
-                          <td> {singleData?.garage} </td>
+                          <td> {singleData.garage} </td>
                         </tr>
                         <tr>
                           <td>8</td>
                           <td> মসজিদ স্টাফ </td>
-                          <td> {singleData?.mosjid} </td>
+                          <td> {singleData.mosjid} </td>
                         </tr>
                         <tr>
                           <td>9</td>
                           <td> স্টাফ বেতন ও সার্ভিস চার্জ </td>
-                          <td> {singleData?.staf} </td>
+                          <td> {singleData.staf} </td>
                         </tr>
                         <tr>
                           <td>9</td>
                           <td> বিল জমা দেওয়ার শেষ তারিখ </td>
-                          <td> {singleData?.expire} </td>
+                          <td> {singleData.expire} </td>
                         </tr>
                         <tr>
-                          <td>10</td>
-                          <td> বিলম্বিত জরিমানা ফি </td>
-                          <td> 10% </td>
+                          <td className="text-danger">10</td>
+                          <td className="text-danger"> বিলম্বিত জরিমানা ফি </td>
+                          <td className="text-danger"> 10% </td>
                         </tr>
                         <tr>
-                          <td> </td>
-                          <td>সর্বোমোট</td>
-                          <td> {singleData.total} </td>
+                          <td className="bg-primary"></td>
+                          <td className="bg-primary">সর্বোমোট</td>
+                          <td className="bg-primary"> {singleData.total} </td>
                         </tr>
                       </tbody>
                     </Table>
@@ -167,10 +172,10 @@ const GetAllBills = () => {
           <div className="table-responsive">
             <table className="table table-hover table-center mb-0">
               <thead>
-                <tr>
+                <tr className="text-center">
                   <th>#</th>
-                  <th>Submit Date</th>
-                  <th style={{ color: "red" }}>Expire Date</th>
+                  <th>Bill Date</th>
+                  <th>Paid Date</th>
                   <th>Total</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -178,34 +183,33 @@ const GetAllBills = () => {
               </thead>
 
               <tbody>
-                {activebills.length > 0
-                  ? activebills.map((item, index) => {
+                {payments?.length > 0
+                  ? payments?.map((item, index) => {
                       return (
-                        <tr key={index}>
+                        <tr key={index} className="text-center">
                           <td> {index + 1} </td>
 
                           <td>
-                            <h2>{item.billdate}</h2>
+                            <h2> {item.btypebills?.billdate} </h2>
                           </td>
 
                           <td>
-                            <h2 style={{ color: "red" }}> {item.expire} </h2>
+                            <h2>
+                              {`${new Date().getFullYear(
+                                item.createdAt
+                              )}-${new Date().getMonth(
+                                item.createdAt
+                              )}-${new Date().getDate(item.createdAt)}`}
+                            </h2>
                           </td>
 
                           <td>
-                            <h2> {item.total} </h2>
+                            <h2> {item.amount} </h2>
                           </td>
+
                           <td>
-                            <Link
-                              className={
-                                duepaymets?.find((x) => x._id === item?._id)
-                                  ? "btn btn-sm btn btn-danger"
-                                  : "btn btn-sm btn btn-success"
-                              }
-                            >
-                              {duepaymets?.find((x) => x._id === item?._id)
-                                ? "Due"
-                                : "Paid"}
+                            <Link className="btn btn-sm btn btn-success">
+                              Paied
                             </Link>
                           </td>
 
@@ -213,7 +217,9 @@ const GetAllBills = () => {
                             <div className="button-action">
                               <button
                                 className="btn btn-sm btn btn-primary mx-1"
-                                onClick={() => handleSingleModalShow(item._id)}
+                                onClick={() =>
+                                  handleSingleModalShow(item.btypebills._id)
+                                }
                               >
                                 <IoEye />
                               </button>
@@ -235,4 +241,4 @@ const GetAllBills = () => {
   );
 };
 
-export default GetAllBills;
+export default AllPaidBills;
