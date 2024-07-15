@@ -128,15 +128,15 @@ export const accountActivitonByOtp = asyncHandler(async (req, res) => {
   if (isEmail(tokenVerify.auth)) {
     activateStudent = await User.findOne({ email: tokenVerify.auth });
     if (!activateStudent) {
-      return res.status(400).json({ message: "Student email not found" });
+      return res.status(400).json({ message: "User email not found" });
     }
   } else if (isMobile(tokenVerify.auth)) {
     activateStudent = await User.findOne({ phone: tokenVerify.auth });
     if (!activateStudent) {
-      return res.status(400).json({ message: "Student phone not found" });
+      return res.status(400).json({ message: "User phone not found" });
     }
   } else {
-    return res.status(400).json({ message: "Invalid Student" });
+    return res.status(400).json({ message: "Invalid User" });
   }
 
   //check otp
@@ -153,7 +153,7 @@ export const accountActivitonByOtp = asyncHandler(async (req, res) => {
   res.clearCookie("activitionToken");
 
   //final response
-  res.status(200).json({ message: "Student Activation successfull" });
+  res.status(200).json({ message: "User Activation successfull" });
 });
 
 /**
@@ -177,15 +177,15 @@ export const userLogin = asyncHandler(async (req, res) => {
   if (isEmail(auth)) {
     loginSudent = await User.findOne({ email: auth });
     if (!loginSudent) {
-      return res.status(400).json({ message: "Student email not found" });
+      return res.status(400).json({ message: "User email not found" });
     }
   } else if (isMobile(auth)) {
     loginSudent = await User.findOne({ phone: auth });
     if (!loginSudent) {
-      return res.status(400).json({ message: "Student phone not found" });
+      return res.status(400).json({ message: "User phone not found" });
     }
   } else {
-    return res.status(400).json({ message: "Invalid Student" });
+    return res.status(400).json({ message: "Invalid User" });
   }
 
   //check password
