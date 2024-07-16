@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://utility-management.vercel.app/",
+    origin: "https://utility-management.vercel.app",
     credentials: true,
   })
 );
