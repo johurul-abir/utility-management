@@ -31,11 +31,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   cors({
+<<<<<<< HEAD
     origin:
       process.env.APP_ENV == "Development"
         ? "http://localhost:3000"
         : "https://utility-management.vercel.app/",
 
+=======
+    origin: "https://utility-management.vercel.app",
+>>>>>>> 791a9c0d198dacc8bb64b70e32efc70ff5ce8c2c
     credentials: true,
   })
 );
