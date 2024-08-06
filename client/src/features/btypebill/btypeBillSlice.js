@@ -14,6 +14,7 @@ const btypeBillSlice = createSlice({
     btypebills: [],
     activebills: [],
     dueadminbills: [],
+    userid: null,
     loading: false,
     message: null,
     error: null,
@@ -22,6 +23,10 @@ const btypeBillSlice = createSlice({
   reducers: {
     setMessageEmpty: (state) => {
       (state.error = null), (state.message = null);
+    },
+
+    setId: (state, action) => {
+      state.userid = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -93,7 +98,7 @@ const btypeBillSlice = createSlice({
       .addCase(activeBill.fulfilled, (state, action) => {
         state.loading = false;
         state.btypebills = action.payload.activebills;
-        state.message = action.payload.message;
+        state.message = "Send active bill successfull";
       })
 
       //get all due bills for admin
@@ -114,6 +119,7 @@ const btypeBillSlice = createSlice({
 
 //export setMessageEmpty
 export const { setMessageEmpty } = btypeBillSlice.actions;
+export const { setId } = btypeBillSlice.actions;
 
 //export default
 export default btypeBillSlice.reducer;

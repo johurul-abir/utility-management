@@ -2,7 +2,7 @@ import { Card, CardBody, CardHeader, Container, Row } from "react-bootstrap";
 import "./BtypeBill.scss";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useForm from "../../../../hooks/useForm";
 import { creatBtypeBill } from "../../../../features/btypebill/btypeApiSlice";
 import { useEffect } from "react";
@@ -44,7 +44,7 @@ const BtypeBill = () => {
       toast.error(error);
       dispatch(setMessageEmpty());
     }
-  }, [message, error, setMessageEmpty]);
+  }, [message, error, dispatch, navigate, resetForm]);
 
   return (
     <>

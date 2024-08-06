@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Notice from "../model/noticeSchema.js";
+import fs from "fs";
 
 /**
  *
@@ -13,15 +14,10 @@ export const crateNotice = asyncHandler(async (req, res) => {
   //get student data
   const { title, content } = req.body;
 
-  //check title and conent
-
-  if (!title || !content) {
-    return res.status(400).json({ message: "Title and content are required" });
-  }
-
   const data = await Notice.create({
     title,
     content,
+    img: req.file.filename,
   });
 
   res
@@ -31,7 +27,7 @@ export const crateNotice = asyncHandler(async (req, res) => {
 
 /**
  *
- * @description Delete Notice
+ * @description Get all Notice
  * @method DELETE
  * @route api/v1/notice
  * @access public
@@ -71,6 +67,12 @@ export const getSingleNotice = asyncHandler(async (req, res) => {
 
 export const deleteNotice = asyncHandler(async (req, res) => {
   const { id } = req.params;
+
+  const data = await Notice.findById(id);
+  fs.unlink("public/notice/" + data.img, function (err) {
+    console.log(err);
+  });
+
   await Notice.findByIdAndDelete(id);
 
   res.status(200).json({ message: "Notice deleted successfull" });

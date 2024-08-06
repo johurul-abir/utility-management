@@ -11,12 +11,17 @@
   }
 
   .right-support {
+    margin-top: 25%;
+    margin-left: 30px;
     h1 {
       font-weight: 600;
-      text-align: center;
       font-size: 40px;
-      padding-bottom: 30px;
       text-transform: capitalize;
+    }
+    h6 {
+      span {
+        font-weight: 600;
+      }
     }
 
     h4 {
@@ -56,6 +61,16 @@
           border: 1px solid #fff;
         }
       }
+    }
+    .phone {
+      background-color: #009efb;
+      border: none;
+      color: #f0f8ff;
+      font-size: 18px;
+      letter-spacing: 2px;
+      font-weight: 500;
+      padding: 5px 15px;
+      border-radius: 2px;
     }
   }
 }

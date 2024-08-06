@@ -11,7 +11,7 @@ const Header = () => {
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
           <Navbar.Brand as={Link} to="/">
-            <h2 className="text-primary">BRP</h2>
+            <h2 className="text-info">BRP</h2>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -19,9 +19,7 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="/"
-                className={
-                  location.pathname === "/" ? "text-primary" : undefined
-                }
+                className={location.pathname === "/" ? "text-info" : undefined}
               >
                 Home
               </Nav.Link>
@@ -29,7 +27,7 @@ const Header = () => {
                 as={Link}
                 to="/notice"
                 className={
-                  location.pathname === "/notice" ? "text-primary" : undefined
+                  location.pathname === "/notice" ? "text-info" : undefined
                 }
               >
                 Notice
@@ -38,13 +36,13 @@ const Header = () => {
                 as={Link}
                 to="/team"
                 className={
-                  location.pathname === "/team" ? "text-primary" : undefined
+                  location.pathname === "/team" ? "text-info" : undefined
                 }
               >
                 Team Member
               </Nav.Link>
               <Nav.Link as={Link} to="/login">
-                <button className="btn btn-primary">Login</button>
+                <button className="btn btn-info">Login</button>
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

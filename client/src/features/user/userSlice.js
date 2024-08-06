@@ -5,6 +5,8 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     users: [],
+    runingpaidusers: [],
+    runingdueusers: [],
     loading: false,
     message: null,
     error: null,

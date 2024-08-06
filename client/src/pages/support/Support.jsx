@@ -1,7 +1,6 @@
 import "./support.scss";
 import support from "../../assets/img/support.jpg";
 import { Col } from "react-bootstrap";
-import { MdOutlinePhone } from "react-icons/md";
 
 const Support = () => {
   return (
@@ -16,25 +15,22 @@ const Support = () => {
             </Col>
             <Col md={6}>
               <div className="right-support">
-                <h1>Our best Supports</h1>
+                <h1>
+                  {" "}
+                  <span className="text-info"> Our Support </span> and Help
+                </h1>
                 <h6>
                   <span> Support-time: </span> 10.00am - 4.00pm
                 </h6>
                 <br />
 
-                <h2>Hotline</h2>
-                <div className="divider"></div>
-                <h4>
-                  <MdOutlinePhone />
-                  <span></span>
-                  01959609081
-                </h4>
-                <h4>
-                  <span>
-                    <MdOutlinePhone />
-                  </span>
-                  01959609081
-                </h4>
+                <p>
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                  Voluptates cum error voluptatibus esse asperiores voluptatum
+                  maiores facere fugit amet officia optio dolorum, harum totam
+                  tempora consequuntur quam facilis dicta repellendus!
+                </p>
+                <button className="phone">+8801959 609081</button>
               </div>
             </Col>
           </div>

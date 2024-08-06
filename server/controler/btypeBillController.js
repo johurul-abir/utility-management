@@ -13,9 +13,10 @@ import { BillNotificationMail } from "../emails/billsNotification.js";
  */
 export const getAllBtypeBills = asyncHandler(async (req, res) => {
   const data = await BtypeBill.find().populate("users");
+  const bills = data.sort().reverse();
   res
     .status(200)
-    .json({ btypebills: data, message: "All student get successfull" });
+    .json({ btypebills: bills, message: "All student get successfull" });
 });
 
 /**
@@ -74,6 +75,7 @@ export const crateBtypeBill = asyncHandler(async (req, res) => {
     staf,
     total: total,
     expire,
+    fine: (total * 10) / 100,
   });
 
   res.status(200).json({ bill: data, message: "New bill create successfull" });
@@ -174,7 +176,7 @@ export const sentBillMsg = asyncHandler(async (req, res) => {
 
   const user = await User?.find();
 
-  const userId = user.map((item, index) => {
+  const userId = user?.map((item, index) => {
     return item._id;
   });
 
@@ -185,7 +187,7 @@ export const sentBillMsg = asyncHandler(async (req, res) => {
   );
 
   if (update) {
-    const addbill = user.map((item, index) => {
+    const addbill = user?.map((item, index) => {
       return (user = { ...item, allbills: [...item, id] });
     });
   }
@@ -200,9 +202,10 @@ export const sentBillMsg = asyncHandler(async (req, res) => {
   //   })
   // );
 
-  return res
-    .status(200)
-    .json({ activebills: update, message: "Sent bill to user successfull" });
+  return res.status(200).json({
+    activebills: update,
+    message: "Send Active bill to all users successfull",
+  });
 });
 
 /**
@@ -243,14 +246,22 @@ export const SeeAllUserPaymentBillInAdmin = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Data not found" });
   }
 
-  const data = await BtypeBill.find({ activebill: true })
-    .where("_id")
-    .in(bills);
+  const data = await BtypeBill.find({
+    activebill: true,
+    _id: { $in: bills },
+  });
   res
     .status(200)
     .json({ userpaidbills: data, message: "All student get successfull" });
 });
 
+/**
+ *
+ * @description SeeAllUserDueBillInAdmin
+ * @method GET
+ * @route api/v1/btypebill/paybill
+ * @access public
+ */
 export const SeeAllUserDueBillInAdmin = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -264,9 +275,11 @@ export const SeeAllUserDueBillInAdmin = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Data not found" });
   }
 
-  const data = await BtypeBill.find({ activebill: true })
-    .where("_id")
-    .nin(bills);
+  const data = await BtypeBill.find({
+    activebill: true,
+    _id: { $nin: bills },
+  });
+
   res
     .status(200)
     .json({ userduebills: data, message: "All student get successfull" });

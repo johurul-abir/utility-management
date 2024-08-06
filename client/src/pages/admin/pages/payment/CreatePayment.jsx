@@ -2,23 +2,32 @@ import { useEffect, useState } from "react";
 import API from "../../../../utils/api";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBtypeBills } from "../../../../features/btypebill/btypeApiSlice";
+import { toast } from "react-toastify";
+import { setMessageEmpty } from "../../../../features/btypebill/btypeBillSlice";
 
 const CreatePayment = () => {
   const dispatch = useDispatch();
   const [alluser, setAlluser] = useState();
-  const [total, setTotal] = useState();
 
   const getUsers = async () => {
     const response = await API.get("/api/v1/user");
-    setAlluser(response.data.user);
+    setAlluser(response.data.users);
   };
 
   const { btypebills, message, error } = useSelector((state) => state.btype);
 
   useEffect(() => {
+    if (message) {
+      toast.success(message);
+      dispatch(setMessageEmpty());
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(setMessageEmpty());
+    }
     getUsers();
     dispatch(getAllBtypeBills());
-  }, [dispatch]);
+  }, [dispatch, message, error]);
   return (
     <>
       <div className="container">
@@ -52,10 +61,12 @@ const CreatePayment = () => {
                     className="item"
                     style={{ width: "48%", display: "inline-block" }}
                   >
-                    <label> Name </label>
-                    <select name="" className="form-control">
-                      <option value=""></option>
-                    </select>
+                    <label> Name of given payment </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="paymentman"
+                    />
                   </div>
 
                   <div

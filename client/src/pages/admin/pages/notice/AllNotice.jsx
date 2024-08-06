@@ -11,6 +11,7 @@ import {
 import { CloseButton, Modal, ModalBody, ModalHeader } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { baseURL } from "../../../../utils/api";
 
 const AllNotice = () => {
   const dispatch = useDispatch();
@@ -49,8 +50,9 @@ const AllNotice = () => {
           <h1>{singlenotice?.title}</h1>
           <br />
           <img
-            src="https://t3.ftcdn.net/jpg/04/51/58/68/360_F_451586836_NNmw4WcMDEaPQHrtAzL6kRFNunp4eq1e.jpg"
+            src={baseURL + "/notice/" + singlenotice?.img}
             alt=""
+            className="w-100"
           />
           <p>{singlenotice?.content}</p>
         </ModalBody>
@@ -91,10 +93,10 @@ const AllNotice = () => {
                               <td style={{ width: "3%" }}> {index + 1} </td>
                               <td style={{ width: "12%" }}>
                                 <img
-                                  src="https://t3.ftcdn.net/jpg/04/51/58/68/360_F_451586836_NNmw4WcMDEaPQHrtAzL6kRFNunp4eq1e.jpg"
+                                  src={baseURL + "/notice/" + item?.img}
                                   style={{
-                                    width: "100%",
-                                    borderRadius: "2px",
+                                    width: "60px",
+                                    borderRadius: "5px",
                                   }}
                                   alt=""
                                 />

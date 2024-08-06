@@ -10,6 +10,8 @@ import cookieParser from "cookie-parser";
 import btypeBillRouter from "./router/btypeBillRouter.js";
 import noticeRuter from "./router/noticeRouter.js";
 import paymentRouter from "./router/paymentRouter.js";
+import teamRouter from "./router/teamRouter.js";
+import complainRouter from "./router/complainRouter.js";
 
 //dotenv config
 dotenv.config();
@@ -29,7 +31,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin:
+      process.env.APP_ENV == "Development"
+        ? "http://localhost:3000"
+        : "https://utility-management.vercel.app/",
+
     credentials: true,
   })
 );
@@ -40,6 +46,8 @@ app.use(userAuthRouter);
 app.use("/api/v1/btypebill", btypeBillRouter);
 app.use("/api/v1/notice", noticeRuter);
 app.use("/api/v1/payment", paymentRouter);
+app.use("/api/v1/team", teamRouter);
+app.use("/api/v1/complain", complainRouter);
 
 //errorHandler
 app.use(errorHandler);

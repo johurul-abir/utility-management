@@ -1,0 +1,13 @@
+.img_preview_box {
+  position: relative;
+  button {
+    font-size: 10px;
+    rotate: -45deg;
+    padding: 3px;
+    border-radius: 50%;
+    background-color: #f11111;
+    position: absolute;
+    right: -12px;
+    top: -12px;
+  }
+}

@@ -3,7 +3,6 @@ import { IoEye } from "react-icons/io5";
 import { CiSaveDown1 } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getActiveBills } from "../../../../features/btypebill/btypeApiSlice";
 import { Container, Modal, Row, Table } from "react-bootstrap";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-toastify";
@@ -17,8 +16,6 @@ import { setMessageEmpty } from "../../../../features/payment/paymentSlice";
 const AllDueBills = () => {
   const dispatch = useDispatch();
 
-  const { btypebills } = useSelector((state) => state.btype);
-
   const { duepaymets, message, error } = useSelector((state) => state.payment);
 
   //single Modal show hide State
@@ -30,17 +27,25 @@ const AllDueBills = () => {
   //single modal show handle
   const handleSingleModalShow = async (id) => {
     setModal(true);
-    const data = await btypebills.find((data) => data._id == id);
+    const data = await duepaymets.find((data) => data._id == id);
     setSingleData(data);
   };
 
   const loginuser = JSON.parse(localStorage.getItem("user"));
 
   const handlePayClick = async (id) => {
-    const paid = btypebills.find((item) => item._id === id);
+    const paid = duepaymets.find((item) => item._id === id);
+
+    //check fine
+    let totalBill = paid.total;
+
+    if (new Date().getTime() > new Date(paid?.expire).getTime()) {
+      totalBill = Number(paid.total + paid.fine);
+    }
+
     dispatch(
       createPayment({
-        amount: `${paid.total}`,
+        amount: totalBill,
         users: [loginuser._id],
         btypebills: `${id}`,
       })
@@ -51,7 +56,6 @@ const AllDueBills = () => {
     if (message) {
       toast.success(message);
       dispatch(getAllDuebills());
-      dispatch(getActiveBills());
       dispatch(getAllPayments());
       dispatch(setMessageEmpty());
     }
@@ -60,7 +64,6 @@ const AllDueBills = () => {
       dispatch(setMessageEmpty());
     }
     dispatch(getAllDuebills());
-    dispatch(getActiveBills());
   }, [dispatch, message, error]);
 
   return (
@@ -107,10 +110,10 @@ const AllDueBills = () => {
                       <p>ট্রাষ্ট-ব্যাংক-কাফরুল শাখা A/C 0041-020003058</p>
                     </div>
                     <div className="date">
-                      <p>মাসের নাম:&nbsp; {singleData.billdate} </p>
+                      <p>মাসের নাম:&nbsp; {singleData?.billdate} </p>
                       <p>
                         তারিখ:&nbsp;
-                        {singleData.billdate}
+                        {singleData?.billdate}
                       </p>
                     </div>
                   </div>
@@ -127,68 +130,110 @@ const AllDueBills = () => {
                         <tr>
                           <td>1</td>
                           <td> গ্যাস বিল</td>
-                          <td> {singleData.gass} </td>
+                          <td> {singleData?.gass} </td>
                         </tr>
                         <tr>
                           <td>2</td>
                           <td> বিদ্যুৎ বিল</td>
-                          <td>{singleData.electricity} </td>
+                          <td>{singleData?.electricity} </td>
                         </tr>
                         <tr>
                           <td>2</td>
                           <td> পানি বিল</td>
-                          <td> {singleData.water} </td>
+                          <td> {singleData?.water} </td>
                         </tr>
                         <tr>
                           <td>3</td>
                           <td> অভ্যন্তরিন পৌরসুবিধা</td>
-                          <td> {singleData.internalfacilities} </td>
+                          <td> {singleData?.internalfacilities} </td>
                         </tr>
                         <tr>
                           <td>4</td>
                           <td>নিরাপত্তা চার্জ</td>
-                          <td> {singleData.safety} </td>
+                          <td> {singleData?.safety} </td>
                         </tr>
                         <tr>
                           <td>5</td>
                           <td> কমন মিটার</td>
-                          <td> {singleData.commonmitter} </td>
+                          <td> {singleData?.commonmitter} </td>
                         </tr>
                         <tr>
                           <td>6</td>
                           <td>জেনারেটরের চার্জ</td>
-                          <td> {singleData.generator} </td>
+                          <td> {singleData?.generator} </td>
                         </tr>
                         <tr>
                           <td>7</td>
                           <td> গ্যারেজ বাবদ</td>
-                          <td> {singleData.garage} </td>
+                          <td> {singleData?.garage} </td>
                         </tr>
                         <tr>
                           <td>8</td>
                           <td> মসজিদ স্টাফ </td>
-                          <td> {singleData.mosjid} </td>
+                          <td> {singleData?.mosjid} </td>
                         </tr>
                         <tr>
                           <td>9</td>
                           <td> স্টাফ বেতন ও সার্ভিস চার্জ </td>
-                          <td> {singleData.staf} </td>
+                          <td> {singleData?.staf} </td>
                         </tr>
                         <tr>
                           <td>9</td>
                           <td> বিল জমা দেওয়ার শেষ তারিখ </td>
-                          <td> {singleData.expire} </td>
+                          <td> {singleData?.expire} </td>
                         </tr>
-                        <tr>
-                          <td>10</td>
-                          <td> বিলম্বিত জরিমানা ফি </td>
-                          <td> 10% </td>
-                        </tr>
-                        <tr>
-                          <td> </td>
-                          <td>সর্বোমোট</td>
-                          <td> {singleData.total} </td>
-                        </tr>
+                        {new Date().getTime() >
+                        new Date(singleData?.expire).getTime() ? (
+                          <>
+                            <tr>
+                              <td className="bg-danger text-light">10</td>
+                              <td className="text-light bg-danger">
+                                বিলম্বিত জরিমানা ফি 10%
+                              </td>
+                              <td className="text-light bg-danger">
+                                {singleData?.fine}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td> </td>
+                              <td>
+                                <b> সর্বোমোট</b>
+                              </td>
+                              <td>
+                                <b>
+                                  {singleData?.total +
+                                    " + " +
+                                    singleData?.fine +
+                                    " = " +
+                                    Number(
+                                      singleData?.total + singleData?.fine
+                                    )}
+                                </b>
+                              </td>
+                            </tr>
+                          </>
+                        ) : (
+                          <>
+                            <tr>
+                              <td className="text-danger">10</td>
+                              <td className="text-danger">
+                                বিলম্বিত জরিমানা ফি 10%
+                              </td>
+                              <td className="text-danger">
+                                {singleData?.fine}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td> </td>
+                              <td>
+                                <b>সর্বোমোট</b>
+                              </td>
+                              <td>
+                                <b>{singleData?.total}</b>
+                              </td>
+                            </tr>
+                          </>
+                        )}
                       </tbody>
                     </Table>
                   </div>

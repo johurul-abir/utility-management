@@ -43,16 +43,6 @@ const userSchema = mongoose.Schema(
       default: [],
     },
 
-    donebillofmonth: {
-      type: [String],
-      default: [],
-      trim: true,
-    },
-    duebillofmonth: {
-      type: [String],
-      default: [],
-      trim: true,
-    },
     gender: {
       type: Boolean,
       enum: ["Male", "Female"],

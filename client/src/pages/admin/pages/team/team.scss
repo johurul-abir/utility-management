@@ -1,0 +1,24 @@
+form {
+  .ditem {
+    display: flex;
+    justify-content: space-between;
+    .item {
+      width: 49%;
+      label {
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+.img_preview {
+  .img_box {
+    width: 150px;
+    position: relative;
+    button {
+      font-size: 12px;
+      position: absolute;
+      right: 0;
+    }
+  }
+}

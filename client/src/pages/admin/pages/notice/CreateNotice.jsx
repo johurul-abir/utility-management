@@ -1,15 +1,17 @@
-import { Card, CardBody, CardHeader } from "react-bootstrap";
+import { Card, CardBody, CardHeader, CloseButton } from "react-bootstrap";
 import useForm from "../../../../hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
 import { createNotice } from "../../../../features/notice/noticeApiSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { setMessageEmpty } from "../../../../features/notice/noticeSlice";
 import { useNavigate, Link } from "react-router-dom";
+import "./notice.scss";
 
 const CreateNotice = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [file, setfile] = useState();
 
   const { message, error } = useSelector((state) => state.notice);
 
@@ -18,21 +20,32 @@ const CreateNotice = () => {
     content: "",
   });
 
+  const handleImageChange = (e) => {
+    setfile(e.target.files[0]);
+  };
+
   const handleNoticeSubmit = (e) => {
     e.preventDefault();
-    dispatch(createNotice(input));
+
+    const formData = new FormData();
+    formData.append("title", input.title);
+    formData.append("content", input.content);
+    formData.append("noticephoto", file);
+
+    dispatch(createNotice(formData));
+    setfile(null);
   };
 
   useEffect(() => {
     if (message) {
       toast.success(message);
       resetForm();
-      setMessageEmpty();
       navigate("/admin/allnotice");
+      dispatch(setMessageEmpty());
     }
     if (error) {
       toast.error(error);
-      setMessageEmpty();
+      dispatch(setMessageEmpty());
     }
   }, [dispatch, message, error, resetForm, navigate]);
 
@@ -52,7 +65,11 @@ const CreateNotice = () => {
                 <h3>Create Notice</h3>
               </CardHeader>
               <CardBody>
-                <form action="" onSubmit={handleNoticeSubmit}>
+                <form
+                  enctype="multipart/form-data"
+                  method="post"
+                  onSubmit={handleNoticeSubmit}
+                >
                   <div className="item mb-2">
                     <label>Title</label>
                     <input
@@ -81,10 +98,20 @@ const CreateNotice = () => {
                     <input
                       type="file"
                       className="form-control"
-                      name="img"
-                      value={input.img}
-                      onChange={handelInputChange}
+                      name="noticephoto"
+                      onChange={handleImageChange}
                     />
+                    <div className="img_preview_box mt-3 w-25">
+                      {file && (
+                        <>
+                          <CloseButton onClick={() => setfile(null)} />
+                          <img
+                            className="w-100"
+                            src={URL.createObjectURL(file)}
+                          />
+                        </>
+                      )}
+                    </div>
                   </div>
 
                   <div className="item mb-2">

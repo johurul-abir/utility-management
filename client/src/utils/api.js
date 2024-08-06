@@ -2,10 +2,12 @@ import axios from "axios";
 
 //create axios instance
 const API = axios.create({
-  baseURL: "https://utility-management.onrender.com/",
+  baseURL: "http://localhost:6060/",
   timeout: 10000,
   withCredentials: true,
 });
 
 //export default
 export default API;
+
+export const baseURL = "http://localhost:6060/";

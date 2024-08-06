@@ -65,3 +65,73 @@ export const deletePayment = createAsyncThunk(
     }
   }
 );
+
+//get all runig paid users
+export const getRuningMonthPaidUsers = createAsyncThunk(
+  "payment/getRuningMonthPaidUsers",
+  async () => {
+    try {
+      const response = await API.get("/api/v1/payment/allruningpaiduser");
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+//get all runig paid users
+export const getRuningMonthDueUsers = createAsyncThunk(
+  "payment/getRuningMonthDueUsers",
+  async () => {
+    try {
+      const response = await API.get("/api/v1/payment/getruningdueusers");
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+//get all runig paid users
+export const getLast12MonthDueUsers = createAsyncThunk(
+  "payment/getLast12MonthDueUsers",
+  async () => {
+    try {
+      const response = await API.get("/api/v1/payment/last12monthdueusers");
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+//get all users more than 6 month due users
+export const moreThen5MonthDueUsers = createAsyncThunk(
+  "payment/moreThen5MonthDueUsers",
+  async () => {
+    try {
+      const response = await API.get("/api/v1/payment/more-6month-due-users");
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+//get all users more than 12 month due users
+export const moreThen12MonthDueUsers = createAsyncThunk(
+  "payment/moreThen12MonthDueUsers",
+  async () => {
+    try {
+      const response = await API.get("/api/v1/payment/more-12month-due-users");
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);

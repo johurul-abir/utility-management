@@ -102,31 +102,38 @@ const UserDashboard = () => {
                       </li>
 
                       <li>
-                        <a href="chat.html">
+                        <Link to="/dashboard/specialnotice">
                           <i className="fas fa-comments" />
                           <span>Special Notice</span>
                           <small className="unread-msg">23</small>
-                        </a>
+                        </Link>
                       </li>
 
                       <li>
-                        <a href="patient-accounts.html">
+                        <Link to="/dashboard/createcomplain">
                           <i className="fas fa-file-invoice-dollar" />
-                          <span>Accounts</span>
-                        </a>
+                          <span>Create Complain</span>
+                        </Link>
                       </li>
 
                       <li>
-                        <a href="profile-settings.html">
+                        <Link to="/dashboard/complainhistory">
+                          <i className="fas fa-file-invoice-dollar" />
+                          <span> Complain History</span>
+                        </Link>
+                      </li>
+
+                      <li>
+                        <Link to="/dashboard/profilesettin">
                           <i className="fas fa-user-cog" />
                           <span>Profile Settings</span>
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a href="change-password.html">
+                        <Link to="/dashboard/changepassword">
                           <i className="fas fa-lock" />
                           <span>Change Password</span>
-                        </a>
+                        </Link>
                       </li>
                       <li>
                         <a onClick={handleLogOut}>

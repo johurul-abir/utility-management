@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deletePayment,
   getAllAdminPayments,
-  getAllPayments,
 } from "../../../../features/payment/paymentApiSlice";
 import { RxCross2 } from "react-icons/rx";
 import Swal from "sweetalert2";
@@ -68,11 +67,11 @@ const AllPayment = () => {
   useEffect(() => {
     if (message) {
       dispatch(getAllAdminPayments());
-      dispatch(getAllPayments());
-      setMessageEmpty();
+      dispatch(setMessageEmpty());
     }
     if (error) {
       toast.error(error);
+      dispatch(setMessageEmpty());
     }
     dispatch(getAllAdminPayments());
   }, [dispatch, message, error]);
@@ -195,19 +194,59 @@ const AllPayment = () => {
                           <td> বিল জমা দেওয়ার শেষ তারিখ </td>
                           <td> {singleData.btypebills?.expire} </td>
                         </tr>
-                        <tr>
-                          <td className="text-danger">10</td>
-                          <td className="text-danger"> বিলম্বিত জরিমানা ফি </td>
-                          <td className="text-danger"> 10% </td>
-                        </tr>
-                        <tr>
-                          <td className="bg-primary"></td>
-                          <td className="bg-primary">সর্বোমোট</td>
-                          <td className="bg-primary">
-                            {" "}
-                            {singleData.btypebills?.total}{" "}
-                          </td>
-                        </tr>
+                        {new Date().getTime() >
+                        new Date(singleData?.btypebills?.expire).getTime() ? (
+                          <>
+                            <tr>
+                              <td className="bg-danger text-light">10</td>
+                              <td className="text-light bg-danger">
+                                বিলম্বিত জরিমানা ফি 10%
+                              </td>
+                              <td className="text-light bg-danger">
+                                {singleData?.btypebills?.fine}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td> </td>
+                              <td>
+                                <b> সর্বোমোট</b>
+                              </td>
+                              <td>
+                                <b>
+                                  {singleData?.btypebills?.total +
+                                    " + " +
+                                    singleData?.btypebills?.fine +
+                                    " = " +
+                                    Number(
+                                      singleData?.btypebills?.total +
+                                        singleData?.btypebills?.fine
+                                    )}
+                                </b>
+                              </td>
+                            </tr>
+                          </>
+                        ) : (
+                          <>
+                            <tr>
+                              <td className="text-danger">10</td>
+                              <td className="text-danger">
+                                বিলম্বিত জরিমানা ফি 10%
+                              </td>
+                              <td className="text-danger">
+                                {singleData?.btypebills?.fine}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td> </td>
+                              <td>
+                                <b>সর্বোমোট</b>
+                              </td>
+                              <td>
+                                <b>{singleData?.btypebills?.total}</b>
+                              </td>
+                            </tr>
+                          </>
+                        )}
                       </tbody>
                     </Table>
                   </div>
@@ -243,7 +282,7 @@ const AllPayment = () => {
                 </thead>
                 <tbody>
                   {adminpayments?.length > 0
-                    ? adminpayments.map((item, index) => {
+                    ? adminpayments?.map((item, index) => {
                         return (
                           <tr className="align-middle text-center" key={index}>
                             <td> {index + 1} </td>
@@ -251,7 +290,7 @@ const AllPayment = () => {
                             <td> {item.users?.flateno} </td>
 
                             <td>
-                              {item.btypebills.total} <FaBangladeshiTakaSign />
+                              {item?.amount} <FaBangladeshiTakaSign />
                             </td>
 
                             <td>

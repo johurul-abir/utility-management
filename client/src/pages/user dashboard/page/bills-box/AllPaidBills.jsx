@@ -3,32 +3,30 @@ import { IoEye } from "react-icons/io5";
 import { CiSaveDown1 } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getActiveBills } from "../../../../features/btypebill/btypeApiSlice";
 import { Container, Modal, Row, Table } from "react-bootstrap";
 import { RxCross2 } from "react-icons/rx";
 import { getAllPayments } from "../../../../features/payment/paymentApiSlice";
+import govtLogo from "../../../../assets/img/govt.png";
 
 const AllPaidBills = () => {
   const dispatch = useDispatch();
 
-  const { btypebills } = useSelector((state) => state.btype);
   const { payments } = useSelector((state) => state.payment);
 
   //single Modal show hide State
   const [modal, setModal] = useState(false);
 
   //single data show state
-  const [singleData, setSingleData] = useState(false);
+  const [singleData, setSingleData] = useState();
 
   //single modal show handle
   const handleSingleModalShow = async (id) => {
     setModal(true);
-    const data = await btypebills.find((data) => data._id == id);
+    const data = await payments.find((item) => item._id == id);
     setSingleData(data);
   };
 
   useEffect(() => {
-    dispatch(getActiveBills());
     dispatch(getAllPayments());
   }, [dispatch]);
 
@@ -52,10 +50,7 @@ const AllPaidBills = () => {
               <Modal.Body>
                 <div className="bill_header">
                   <div className="header_left">
-                    <img
-                      src="https://1.bp.blogspot.com/-ym26csnYYR8/XXnmanyREUI/AAAAAAAADxI/Bmf_fg2ny3EfA11_3wDhlpyalvEi7zhIQCLcBGAsYHQ/s320/Government%2Bof%2BBangladesh%2BLogo%2BEnglish.png"
-                      alt=""
-                    />
+                    <img src={govtLogo} alt="" />
                   </div>
                   <div className="header_center">
                     <h3>গনপ্রজাতন্ত্রী বাংলাদেশ সরকার</h3>
@@ -75,10 +70,12 @@ const AllPaidBills = () => {
                       <p>ট্রাষ্ট-ব্যাংক-কাফরুল শাখা A/C 0041-020003058</p>
                     </div>
                     <div className="date">
-                      <p>মাসের নাম:&nbsp; {singleData?.billdate} </p>
+                      <p>
+                        মাসের নাম:&nbsp; {singleData?.btypebills?.billdate}{" "}
+                      </p>
                       <p>
                         তারিখ:&nbsp;
-                        {singleData?.billdate}
+                        {singleData?.btypebills?.billdate}
                       </p>
                     </div>
                   </div>
@@ -95,68 +92,114 @@ const AllPaidBills = () => {
                         <tr>
                           <td>1</td>
                           <td> গ্যাস বিল</td>
-                          <td> {singleData.gass} </td>
+                          <td> {singleData?.btypebills?.gass} </td>
                         </tr>
                         <tr>
                           <td>2</td>
                           <td> বিদ্যুৎ বিল</td>
-                          <td>{singleData.electricity} </td>
+                          <td>{singleData?.btypebills?.electricity} </td>
                         </tr>
                         <tr>
                           <td>2</td>
                           <td> পানি বিল</td>
-                          <td> {singleData.water} </td>
+                          <td> {singleData?.btypebills?.water} </td>
                         </tr>
                         <tr>
                           <td>3</td>
                           <td> অভ্যন্তরিন পৌরসুবিধা</td>
-                          <td> {singleData.internalfacilities} </td>
+                          <td>
+                            {" "}
+                            {singleData?.btypebills?.internalfacilities}{" "}
+                          </td>
                         </tr>
                         <tr>
                           <td>4</td>
                           <td>নিরাপত্তা চার্জ</td>
-                          <td> {singleData.safety} </td>
+                          <td> {singleData?.btypebills?.safety} </td>
                         </tr>
                         <tr>
                           <td>5</td>
                           <td> কমন মিটার</td>
-                          <td> {singleData.commonmitter} </td>
+                          <td> {singleData?.btypebills?.commonmitter} </td>
                         </tr>
                         <tr>
                           <td>6</td>
                           <td>জেনারেটরের চার্জ</td>
-                          <td> {singleData.generator} </td>
+                          <td> {singleData?.btypebills?.generator} </td>
                         </tr>
                         <tr>
                           <td>7</td>
                           <td> গ্যারেজ বাবদ</td>
-                          <td> {singleData.garage} </td>
+                          <td> {singleData?.btypebills?.garage} </td>
                         </tr>
                         <tr>
                           <td>8</td>
                           <td> মসজিদ স্টাফ </td>
-                          <td> {singleData.mosjid} </td>
+                          <td> {singleData?.btypebills?.mosjid} </td>
                         </tr>
                         <tr>
                           <td>9</td>
                           <td> স্টাফ বেতন ও সার্ভিস চার্জ </td>
-                          <td> {singleData.staf} </td>
+                          <td> {singleData?.btypebills?.staf} </td>
                         </tr>
                         <tr>
                           <td>9</td>
                           <td> বিল জমা দেওয়ার শেষ তারিখ </td>
-                          <td> {singleData.expire} </td>
+                          <td> {singleData?.btypebills?.expire} </td>
                         </tr>
-                        <tr>
-                          <td className="text-danger">10</td>
-                          <td className="text-danger"> বিলম্বিত জরিমানা ফি </td>
-                          <td className="text-danger"> 10% </td>
-                        </tr>
-                        <tr>
-                          <td className="bg-primary"></td>
-                          <td className="bg-primary">সর্বোমোট</td>
-                          <td className="bg-primary"> {singleData.total} </td>
-                        </tr>
+                        {new Date(singleData?.createdAt).getTime() >
+                        new Date(singleData?.btypebills?.expire).getTime() ? (
+                          <>
+                            <tr>
+                              <td className="bg-danger text-light">10</td>
+                              <td className="text-light bg-danger">
+                                বিলম্বিত জরিমানা ফি 10%
+                              </td>
+                              <td className="text-light bg-danger">
+                                {singleData?.btypebills?.fine}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="bg-primary"> </td>
+                              <td className="bg-primary">
+                                <b> সর্বোমোট</b>
+                              </td>
+                              <td className="bg-primary">
+                                <b>
+                                  {singleData?.btypebills?.total +
+                                    " + " +
+                                    singleData?.btypebills?.fine +
+                                    " = " +
+                                    Number(
+                                      singleData?.btypebills?.total +
+                                        singleData?.btypebills?.fine
+                                    )}
+                                </b>
+                              </td>
+                            </tr>
+                          </>
+                        ) : (
+                          <>
+                            <tr>
+                              <td className="text-danger">10</td>
+                              <td className="text-danger">
+                                বিলম্বিত জরিমানা ফি 10%
+                              </td>
+                              <td className="text-danger">
+                                {singleData?.btypebills?.fine}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td> </td>
+                              <td>
+                                <b>সর্বোমোট</b>
+                              </td>
+                              <td>
+                                <b>{singleData?.btypebills?.total}</b>
+                              </td>
+                            </tr>
+                          </>
+                        )}
                       </tbody>
                     </Table>
                   </div>
@@ -196,15 +239,15 @@ const AllPaidBills = () => {
                           <td>
                             <h2>
                               {`${new Date().getFullYear(
-                                item.createdAt
+                                item?.createdAt
                               )}-${new Date().getMonth(
-                                item.createdAt
+                                item?.createdAt
                               )}-${new Date().getDate(item.createdAt)}`}
                             </h2>
                           </td>
 
                           <td>
-                            <h2> {item.amount} </h2>
+                            <h2> {item?.amount} </h2>
                           </td>
 
                           <td>
@@ -217,9 +260,7 @@ const AllPaidBills = () => {
                             <div className="button-action">
                               <button
                                 className="btn btn-sm btn btn-primary mx-1"
-                                onClick={() =>
-                                  handleSingleModalShow(item.btypebills._id)
-                                }
+                                onClick={() => handleSingleModalShow(item._id)}
                               >
                                 <IoEye />
                               </button>

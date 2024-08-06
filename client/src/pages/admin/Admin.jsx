@@ -66,10 +66,12 @@ const Admin = () => {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                      <Dropdown.Item>
-                        <Link to="team"> New Team </Link>{" "}
+                      <Dropdown.Item as={Link} to="team">
+                        New Team
                       </Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">All Teams</Dropdown.Item>
+                      <Dropdown.Item as={Link} to="allteam">
+                        All Teams
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
 
@@ -147,7 +149,8 @@ const Admin = () => {
                       className="dropdown-btn"
                     >
                       <li>
-                        <IoNotifications /> Create Notice
+                        <IoNotifications />
+                        Notice
                       </li>
                     </Dropdown.Toggle>
 
