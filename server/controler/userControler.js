@@ -18,7 +18,7 @@ import Payment from "../model/Paymet.js";
  */
 
 export const getAllUser = asyncHandler(async (req, res) => {
-  const data = await User.find();
+  const data = await User.find().sort({ updatedAt: -1 });
 
   res.status(200).json({ users: data, message: "Get all users successfull" });
 });

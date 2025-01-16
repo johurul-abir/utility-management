@@ -23,14 +23,17 @@ const Team = () => {
     <>
       <div className="container ">
         <div className="Team_page_heading">
-          <h1>Our Team Mebmer</h1>
+          <h1>
+            {" "}
+            <span className="text-info"> Our Team </span> Mebmer
+          </h1>
           <div className="devider"></div>
         </div>
 
         <div className="team">
           {allteamMember?.map((item, index) => {
             return (
-              <div className="card shadow" key={index}>
+              <div className="card" key={index}>
                 <div className="card-body">
                   <div className="team_box">
                     <img

@@ -182,58 +182,23 @@ const AllBills = () => {
                           <td> বিল জমা দেওয়ার শেষ তারিখ </td>
                           <td> {singleData?.expire} </td>
                         </tr>
-                        {new Date().getTime() >
-                        new Date(singleData?.expire).getTime() ? (
-                          <>
-                            <tr>
-                              <td className="bg-danger text-light">10</td>
-                              <td className="text-light bg-danger">
-                                বিলম্বিত জরিমানা ফি 10%
-                              </td>
-                              <td className="text-light bg-danger">
-                                {singleData?.fine}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="bg-primary"> </td>
-                              <td className="bg-primary">
-                                <b> সর্বোমোট</b>
-                              </td>
-                              <td className="bg-primary">
-                                <b>
-                                  {singleData?.total +
-                                    " + " +
-                                    singleData?.fine +
-                                    " = " +
-                                    Number(
-                                      singleData?.total + singleData?.fine
-                                    )}
-                                </b>
-                              </td>
-                            </tr>
-                          </>
-                        ) : (
-                          <>
-                            <tr>
-                              <td className="text-danger">10</td>
-                              <td className="text-danger">
-                                বিলম্বিত জরিমানা ফি 10%
-                              </td>
-                              <td className="text-danger">
-                                {singleData?.fine}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td> </td>
-                              <td>
-                                <b>সর্বোমোট</b>
-                              </td>
-                              <td>
-                                <b>{singleData?.total}</b>
-                              </td>
-                            </tr>
-                          </>
-                        )}
+
+                        <tr>
+                          <td className=" text-danger">10</td>
+                          <td className="text-danger">
+                            বিলম্বিত জরিমানা ফি 10%
+                          </td>
+                          <td className="text-danger ">{singleData?.fine}</td>
+                        </tr>
+                        <tr>
+                          <td> </td>
+                          <td>
+                            <b> সর্বোমোট</b>
+                          </td>
+                          <td>
+                            <b>{singleData?.total}</b>
+                          </td>
+                        </tr>
                       </tbody>
                     </Table>
                   </div>
@@ -301,7 +266,7 @@ const AllBills = () => {
                                     ? "btn btn-sm btn btn-success"
                                     : "btn btn-sm btn btn-info"
                                 }
-                                onClick={() => handleActiveBill(item._id)}
+                                onClick={() => handleActiveBill(item?._id)}
                               >
                                 {item?.activebill
                                   ? "Send Done"

@@ -40,7 +40,30 @@ export const getAllDuebills = createAsyncThunk(
   }
 );
 
-//get all Due bills
+//test
+
+// export const createPayment = createAsyncThunk(
+//   "payment/createPayment",
+//   async (data) => {
+//     try {
+//       const response = await fetch("http://localhost:5050/api/v1/payment", {
+//         method: "POST",
+//         header: { "content-type": "application/json" },
+//         body: JSON.stringify(data),
+//       })
+//         .then((res) => res.json())
+//         .then((result) => {
+//           //window.location.replace(result.url);
+//           console.log(result);
+//         });
+//       return response.data;
+//     } catch (error) {
+//       throw new Error(error.response.data.message);
+//     }
+//   }
+// );
+
+//Create payment
 export const createPayment = createAsyncThunk(
   "payment/createPayment",
   async (data) => {

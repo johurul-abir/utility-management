@@ -103,7 +103,9 @@ export const deleteBills = asyncHandler(async (req, res) => {
  * @access public
  */
 export const getAllActiveBills = asyncHandler(async (req, res) => {
-  const data = await BtypeBill.find({ activebill: true });
+  const data = await BtypeBill.find({ activebill: true }).sort({
+    updatedAt: -1,
+  });
   res
     .status(200)
     .json({ activebills: data, message: "get all active bill successfull" });
@@ -118,6 +120,7 @@ export const getAllActiveBills = asyncHandler(async (req, res) => {
  */
 export const getAllDueBills = asyncHandler(async (req, res) => {
   const paymentUser = await Payment.find()
+    .sort({ updatedAt: -1 })
     .where("users")
     .in([req.loginuser?._id]);
 
@@ -146,7 +149,6 @@ export const getAllDueBills = asyncHandler(async (req, res) => {
  */
 export const getAllPaidBills = asyncHandler(async (req, res) => {
   const response = await Payment.find().where("users").in([req.loginuser?._id]);
-
   const bills = response.map((item) => {
     return item.btypebills;
   });
@@ -156,6 +158,7 @@ export const getAllPaidBills = asyncHandler(async (req, res) => {
   }
 
   const data = await BtypeBill.find({ activebill: true })
+    .sort({ updatedAt: -1 })
     .where("_id")
     .in(bills);
 

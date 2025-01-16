@@ -224,7 +224,7 @@ const Dashboard = () => {
                                 <span style={{ color: "Red" }}>
                                   {morethan5monthdueusers?.length}
                                 </span>
-                                /<span>500</span>
+                                /<span>{users?.length} </span>
                               </h6>
                               <div className="btn-box">
                                 <Link to="/admin/morethan5monthusers">
@@ -277,7 +277,7 @@ const Dashboard = () => {
                                 <span style={{ color: "Red" }}>
                                   {morethan12monthdueusers?.length}
                                 </span>
-                                /<span>500</span>
+                                /<span> {users?.length} </span>
                               </h6>
                               <div className="btn-box">
                                 <Link to="/admin/morethan12monthusers">
@@ -310,11 +310,14 @@ const Dashboard = () => {
                     <ModalBody>
                       <h3>{singleComplain?.title}</h3>
                       <br />
-                      <img
-                        src={baseURL + "/complain/" + singleComplain?.photo}
-                        alt=""
-                        className="w-100"
-                      />
+                      {singleComplain?.photo ? (
+                        <img
+                          src={baseURL + "/complain/" + singleComplain?.photo}
+                          alt=""
+                          className="w-100"
+                        />
+                      ) : undefined}
+
                       <p>{singleComplain?.content}</p>
                     </ModalBody>
                   </Modal>

@@ -2,18 +2,108 @@ import asyncHandler from "express-async-handler";
 import Payment from "../model/Paymet.js";
 import BtypeBill from "../model/btypeBillSchema.js";
 import User from "../model/userSchema.js";
+//import SSLCommerzPayment from "sslcommerz-lts";
+import dotenv from "dotenv";
 
-/**
- *
- * @description create payment
- * @method POST
- * @route api/v1/payment
- * @access public
- */
+//dotenv config
+dotenv.config();
+
+// STORE_ID = darpo66bee74727829
+// STORE_PASSWORD = darpo66bee74727829@ssl
+
+const store_id = "darpo66bee74727829";
+const store_passwd = "darpo66bee74727829@ssl";
+const is_live = false; //true for live, false for sandbox
+
+// export const orderNow = asyncHandler(async (req, res) => {
+//   const data = {
+//     total_amount: 100,
+//     currency: "BDT",
+//     tran_id: "REF123", // use unique tran_id for each api call
+//     success_url: "http://localhost:3030/success",
+//     fail_url: "http://localhost:3030/fail",
+//     cancel_url: "http://localhost:3030/cancel",
+//     ipn_url: "http://localhost:3030/ipn",
+//     shipping_method: "Courier",
+//     product_name: "Computer.",
+//     product_category: "Electronic",
+//     product_profile: "general",
+//     cus_name: "Customer Name",
+//     cus_email: "customer@example.com",
+//     cus_add1: "Dhaka",
+//     cus_add2: "Dhaka",
+//     cus_city: "Dhaka",
+//     cus_state: "Dhaka",
+//     cus_postcode: "1000",
+//     cus_country: "Bangladesh",
+//     cus_phone: "01711111111",
+//     cus_fax: "01711111111",
+//     ship_name: "Customer Name",
+//     ship_add1: "Dhaka",
+//     ship_add2: "Dhaka",
+//     ship_city: "Dhaka",
+//     ship_state: "Dhaka",
+//     ship_postcode: 1000,
+//     ship_country: "Bangladesh",
+//   };
+
+//   const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
+//       sslcz.init(data).then(apiResponse => {
+//           // Redirect the user to payment gateway
+//           let GatewayPageURL = apiResponse.GatewayPageURL
+//           res.redirect(GatewayPageURL)
+//           console.log('Redirecting to: ', GatewayPageURL)
+//       });
+// });
 
 export const cratePayment = asyncHandler(async (req, res) => {
   //get student data
   const { amount, users, btypebills } = req.body;
+
+  // const user_name = await User.findById(user);
+  // const bill = await BtypeBill.findById(btypebills);
+
+  // const tran_id = Date.now() + "_" + Math.floor(Math.random() * 10000);
+
+  // const data = {
+  //   total_amount: amount,
+  //   currency: "BDT",
+  //   tran_id: tran_id, // use unique tran_id for each api call
+  //   success_url: "http://localhost:3030/success",
+  //   fail_url: "http://localhost:3030/fail",
+  //   cancel_url: "http://localhost:3030/cancel",
+  //   ipn_url: "http://localhost:3030/ipn",
+  //   shipping_method: "Courier",
+  //   flate_no: user_name?.flateno,
+  //   flate_type: user_name?.flatetype,
+  //   cus_name: user_name?.name,
+  //   cus_email: user_name?.email,
+  //   bill_date: bill?.billdate,
+  //   cus_postcode: "1000",
+  //   cus_country: "Bangladesh",
+  //   cus_phone: user_name?.phone,
+  //   ship_name: "Customer Name",
+  //   ship_add1: "Dhaka",
+  //   ship_add2: "Dhaka",
+  //   ship_city: "Dhaka",
+  //   ship_state: "Dhaka",
+  //   ship_postcode: 1000,
+  //   ship_country: "Bangladesh",
+  // };
+
+  //console.log(data);
+
+  // const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
+  // await sslcz.init(data).then((data) => {
+  //   console.log(data?.GatewayPageURL);
+  //   if (data?.GatewayPageURL) {
+  //     return res.status(200).redirect(data?.GatewayPageURL);
+  //   } else {
+  //     return res
+  //       .status(400)
+  //       .json({ message: "ssl seccion was not successfull" });
+  //   }
+  // });
 
   const response = await Payment.create({
     amount,
@@ -23,6 +113,27 @@ export const cratePayment = asyncHandler(async (req, res) => {
 
   res.status(200).json({ payment: response, message: "Payment successfull" });
 });
+
+/**
+ *
+ * @description create payment
+ * @method POST
+ * @route api/v1/payment
+ * @access public
+ */
+
+// export const cratePayment = asyncHandler(async (req, res) => {
+//   //get student data
+//   const { amount, users, btypebills } = req.body;
+
+//   const response = await Payment.create({
+//     amount,
+//     user,
+//     btypebills,
+//   });
+
+//   res.status(200).json({ payment: response, message: "Payment successfull" });
+// });
 
 /**
  *

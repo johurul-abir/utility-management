@@ -61,37 +61,37 @@ export const userRegister = asyncHandler(async (req, res) => {
     flateno: flateno,
   });
 
-  //create student
-  // if (authData) {
-  //   //sent token to cookie
-  //   const activationToken = jwt.sign(
-  //     { authData },
+  // create user
+  if (authData) {
+    //sent token to cookie
+    const activationToken = jwt.sign(
+      { authData },
 
-  //     process.env.ACCOUNT_ACTIVAION_SECRET,
-  //     {
-  //       expiresIn: "10min",
-  //     }
-  //   );
+      process.env.ACCOUNT_ACTIVAION_SECRET,
+      {
+        expiresIn: "10min",
+      }
+    );
 
-  //   res.cookie("activationToken", activationToken);
+    res.cookie("activationToken", activationToken);
 
-  //   //sent varification code
-  //   if (authEmail) {
-  //     await AccountActivationEmail(auth, {
-  //       username: auth,
-  //       password: password,
-  //     });
-  //   } else if (authPhone) {
-  //     await sendSMS(
-  //       auth,
-  //       `Hello ${name} your username is ${auth} and Password is: ${password}`
-  //     );
-  //   } else {
-  //     return res
-  //       .status(400)
-  //       .json({ message: "check phone or email sms limit" });
-  //   }
-  // }
+    //sent varification code
+    if (authEmail) {
+      await AccountActivationEmail(auth, {
+        username: auth,
+        password: password,
+      });
+    } else if (authPhone) {
+      await sendSMS(
+        auth,
+        `Hello ${name} your username is ${auth} and Password is: ${password}`
+      );
+    } else {
+      return res
+        .status(400)
+        .json({ message: "check phone or email sms limit" });
+    }
+  }
 
   //respons
   res.status(200).json({ user: authData, message: "Register successfull" });

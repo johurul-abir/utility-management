@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import Admin from "../pages/admin/Admin";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import Layout from "../components/layout/Layout";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import UserDashboard from "../pages/user dashboard/UserDashboard";
 import AllBills from "../pages/admin/pages/B-type-bill/AllBills";
 import BtypeBill from "../pages/admin/pages/B-type-bill/BtypeBill";
@@ -31,8 +30,9 @@ import ShowDueBills from "../pages/admin/pages/all-btype-users/ShowDueBills";
 const PrivateRouteGard = () => {
   const { auths } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  if (location.pathname === "/admin") {
+  if (location.pathname === "/admin/") {
     navigate("/admin/admindashboard");
   }
 
@@ -53,41 +53,36 @@ const PrivateRouter = [
     element: <PrivateRouteGard />,
     children: [
       {
-        element: <Layout />,
+        path: "dashboard",
+        element: <UserDashboard />,
         children: [
           {
-            path: "dashboard",
-            element: <UserDashboard />,
-            children: [
-              {
-                path: "userdashboard",
-                element: <ProfileDashbord />,
-              },
-              {
-                path: "bills",
-                element: <BillsBox />,
-              },
-              {
-                path: "createcomplain",
-                element: <CreactComplain />,
-              },
-              {
-                path: "complainhistory",
-                element: <ComplainHistory />,
-              },
-              {
-                path: "profilesettin",
-                element: <ProfileSetting />,
-              },
-              {
-                path: "changepassword",
-                element: <ChangePassword />,
-              },
-              {
-                path: "specialnotice",
-                element: <SpecialNotice />,
-              },
-            ],
+            path: "userdashboard",
+            element: <ProfileDashbord />,
+          },
+          {
+            path: "bills",
+            element: <BillsBox />,
+          },
+          {
+            path: "createcomplain",
+            element: <CreactComplain />,
+          },
+          {
+            path: "complainhistory",
+            element: <ComplainHistory />,
+          },
+          {
+            path: "profilesettin",
+            element: <ProfileSetting />,
+          },
+          {
+            path: "changepassword",
+            element: <ChangePassword />,
+          },
+          {
+            path: "specialnotice",
+            element: <SpecialNotice />,
           },
         ],
       },

@@ -86,6 +86,7 @@ const Notice = () => {
           />
         </ModalBody>
       </Modal>
+
       <div className="notice">
         <Container>
           <Row className="justify-content-center align-item-center">

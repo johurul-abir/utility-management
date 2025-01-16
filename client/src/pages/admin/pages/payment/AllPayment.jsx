@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IoEye } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deletePayment,
@@ -21,19 +20,18 @@ import { RxCross2 } from "react-icons/rx";
 import Swal from "sweetalert2";
 import { setMessageEmpty } from "../../../../features/payment/paymentSlice";
 import { toast } from "react-toastify";
+import DataTable from "react-data-table-component";
 
 const AllPayment = () => {
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
+  const [search, setSearch] = useState("");
+  const [filterData, setFilterData] = useState();
 
   //single data show state
   const [singleData, setSingleData] = useState(false);
 
-  const { adminpayments, message, error } = useSelector(
-    (state) => state.payment
-  );
-
-  //const { payments} = useSelector((state) => state.payment);
+  let { adminpayments, message, error } = useSelector((state) => state.payment);
 
   //single modal show handle
   const handleSingleModalShow = async (id) => {
@@ -64,6 +62,45 @@ const AllPayment = () => {
     });
   };
 
+  //data table compnonent
+
+  const columns = [
+    {
+      name: "Date",
+      selector: (row) => row.btypebills?.billdate,
+      sortable: true,
+    },
+    {
+      name: "Flate No",
+      selector: (row) => row.users?.flateno,
+      sortable: true,
+    },
+    {
+      name: "Total Bill",
+      selector: (row) => row.amount,
+    },
+    {
+      name: "Total Bill",
+      selector: (row) => (
+        <p>
+          <button
+            className="btn btn-sm btn btn-warning me-1"
+            onClick={() => handleSingleModalShow(row._id)}
+          >
+            <IoEye />
+          </button>
+          <button
+            className="btn btn-sm btn btn-danger"
+            onClick={() => handleDelete(row._id)}
+          >
+            <MdDelete />
+          </button>
+        </p>
+      ),
+      sortable: true,
+    },
+  ];
+
   useEffect(() => {
     if (message) {
       dispatch(getAllAdminPayments());
@@ -75,6 +112,13 @@ const AllPayment = () => {
     }
     dispatch(getAllAdminPayments());
   }, [dispatch, message, error]);
+
+  useEffect(() => {
+    const flate = adminpayments?.filter((item) => {
+      return item.users?.flateno?.toLowerCase().match(search.toLowerCase());
+    });
+    setFilterData(flate);
+  }, [search]);
 
   return (
     <>
@@ -270,7 +314,23 @@ const AllPayment = () => {
               <h2>All Payments</h2>
             </CardHeader>
             <CardBody>
-              <Table responsive>
+              <DataTable
+                columns={columns}
+                data={search ? filterData : adminpayments}
+                pagination
+                highlightOnHover
+                subHeader
+                subHeaderComponent={
+                  <input
+                    type="text"
+                    placeholder="search flate no"
+                    className="form-control w-25"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                }
+              />
+              {/* <Table responsive>
                 <thead>
                   <tr className="align-middle text-center">
                     <th>#</th>
@@ -312,7 +372,7 @@ const AllPayment = () => {
                       })
                     : "Payment not Found"}
                 </tbody>
-              </Table>
+              </Table> */}
             </CardBody>
           </Card>
         </Container>
