@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { createOTP, isEmail, isMobile, tokenDecode } from "../helper/Helper.js";
 import User from "../model/userSchema.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { AccountActivationEmail } from "../emails/accountActivation.js";
 import { sendSMS } from "../utils/sendSms.js";

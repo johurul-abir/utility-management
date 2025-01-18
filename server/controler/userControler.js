@@ -1,5 +1,5 @@
 import { findPublicId, isEmail, isMobile } from "../helper/Helper.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import {
   fileDataDeleteFromCloud,
   fileUploadToCloud,
